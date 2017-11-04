@@ -9,10 +9,16 @@ class Application(object, metaclass=Singleton):
 	def __init__(self):
 		self.loop = asyncio.get_event_loop()
 		self.config = Config
+		self.modules = []
 
 		logging.basicConfig(level=logging.INFO)
 
 		Config.load()
+
+
+	def initialize_module(self, module_class):
+		module = module_class(self)
+		self.modules.append(module)
 
 
 	def run(self):
