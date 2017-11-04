@@ -71,7 +71,7 @@ class ConfigParser(configparser.ConfigParser):
 		if config_fname != '':
 			if not os.path.isfile(config_fname):
 				print("Config file '{}' not found".format(config_fname), file=sys.stderr)
-				sys.exit(1)
+				sys.exit(os.EX_CONFIG)
 
 			self.read(config_fname)
 
