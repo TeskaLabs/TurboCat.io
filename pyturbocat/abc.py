@@ -27,7 +27,7 @@ class Singleton(type):
 class Module(object):
 
 	def __init__(self, app):
-		pass
+		self.app = app
 
 ###
 
