@@ -1,4 +1,9 @@
-import abc
+import abc, logging
+from .status import Status
+
+###
+
+L = logging.getLogger(__name__)
 
 ###
 
@@ -33,7 +38,10 @@ class Module(object):
 
 class Service(abc.ABC):
 
+	def __init__(self, app, status = Status.CONFIG):
+		self.app = app
+		self.status = status
 
-	def __init__(self, app):
-		pass
-
+	def set_status(self, status):
+		L.warn("Status change at {} from {} to {}".format(self, self.status, status))
+		self.status = status
