@@ -10,6 +10,7 @@ class Application(object, metaclass=Singleton):
 		self.loop = asyncio.get_event_loop()
 		self.config = Config
 		self.modules = []
+		self.services = {}
 
 		logging.basicConfig(level=logging.INFO)
 
@@ -29,3 +30,9 @@ class Application(object, metaclass=Singleton):
 		module = module_class(self)
 		self.modules.append(module)
 
+
+	# Services
+
+	def service_init(self, service_code, service_class):
+		service = service_class(self)
+		self.services[service_code] = service
