@@ -8,6 +8,7 @@ class ConfigParser(configparser.ConfigParser):
 		'general': {
 			'verbose': False,
 			'config_file': '',
+			'include': '',
 		},
 
 		'anonymizer': {
@@ -66,7 +67,6 @@ class ConfigParser(configparser.ConfigParser):
 		'''
 		This method should be called only once, any subsequent call will lead to undefined behaviour
 		'''
-
 		config_fname = self.defaults['general']['config_file']
 		if config_fname != '':
 			if not os.path.isfile(config_fname):
@@ -74,6 +74,12 @@ class ConfigParser(configparser.ConfigParser):
 				sys.exit(os.EX_CONFIG)
 
 			self.read(config_fname)
+
+		# Load included configuration files
+		includes = self.get('general', 'include', fallback='')
+		if includes != '':
+			for include in includes.split(os.pathsep):
+				self.read(include)
 
 		self.add_defaults(self.defaults)
 
