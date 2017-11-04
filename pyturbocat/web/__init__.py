@@ -1,4 +1,5 @@
 import logging
+from .service import WebService
 from pyturbocat import Module
 
 ###
@@ -12,3 +13,4 @@ class Module(Module):
 
 	def __init__(self, app):
 		super().__init__(app)
+		app.service_init('web', WebService)
