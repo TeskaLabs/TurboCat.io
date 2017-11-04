@@ -5,6 +5,10 @@ import pyturbocat
 if __name__ == '__main__':
 	app = pyturbocat.Application()
 
+	# Initialize modules
+	from pyturbocat.web import Module
+	app.module_init(Module)
+
 	# Execute
 	ret = app.run()
 
