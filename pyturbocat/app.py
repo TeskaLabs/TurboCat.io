@@ -11,17 +11,31 @@ class Application(object, metaclass=Singleton):
 		self.config = Config
 		self.modules = []
 		self.services = {}
+		self.fixes = []
 
 		logging.basicConfig(level=logging.INFO)
-
 		Config.load()
 
 
 	def run(self):
+
+		# Fix all actors
+		while len(self.fixes) > 0:
+			fixes = self.fixes
+			self.fixes = []
+			done, pending = self.loop.run_until_complete(asyncio.wait(fixes))
+			self.fixes.extend(pending)
+
+		self.loop.run_forever()
+
 		self.loop.run_until_complete(self.loop.shutdown_asyncgens())
 		self.loop.close()
 
 		return os.EX_OK
+
+
+	def fix(self, future):
+		self.fixes.append(future)
 
 
 	# Modules
