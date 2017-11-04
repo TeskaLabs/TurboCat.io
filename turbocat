@@ -3,6 +3,8 @@ import os, sys
 import pyturbocat
 
 if __name__ == '__main__':
+
+	# Initialize the application object
 	app = pyturbocat.Application()
 
 	# Initialize modules
