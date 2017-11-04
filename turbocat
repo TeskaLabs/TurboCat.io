@@ -1,0 +1,11 @@
+#!/usr/bin/env python3
+import os, sys
+import pyturbocat
+
+if __name__ == '__main__':
+	app = pyturbocat.Application()
+
+	# Execute
+	ret = app.run()
+
+	sys.exit(ret)
