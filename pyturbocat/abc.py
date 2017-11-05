@@ -34,6 +34,12 @@ class Module(object):
 	def __init__(self, app):
 		self.app = app
 
+	def describe(self):
+		return {
+			'module': str(self.__class__.__module__),
+			'name': str(self.__class__.__name__)
+		}
+
 ###
 
 class Service(abc.ABC):
@@ -41,6 +47,12 @@ class Service(abc.ABC):
 	def __init__(self, app, status = Status.CONFIG):
 		self.app = app
 		self.status = status
+
+	def describe(self):
+		return {
+			'module': str(self.__class__.__module__),
+			'name': str(self.__class__.__name__),
+		}
 
 	def set_status(self, status):
 		L.warn("Status change at {} from {} to {}".format(self, self.status, status))
