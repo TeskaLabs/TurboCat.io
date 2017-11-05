@@ -5,11 +5,13 @@
 			<thead>
 				<tr>
 					<th scope="col">Name</th>
+					<th scope="col">Class</th>
 				</tr>
 			</thead>
 			<tbody>
-				<tr ng-repeat="module in $ctrl.modules">
-					<td>{{module.module}}.{{module.name}}</td>
+				<tr ng-repeat="module in modules">
+					<td style="font-family: monospace;">{{module.module}}</td>
+					<td style="font-family: monospace;">{{module.name}}</td>
 				</tr>
 			</tbody>
 		</table>

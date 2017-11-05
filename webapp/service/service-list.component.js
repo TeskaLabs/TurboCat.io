@@ -3,16 +3,21 @@ component('serviceList',
 {
 	templateUrl: '/webapp/service/service-list.template.html?v=' + Date.now(),
 
-	controller: function ServiceListController($scope, $http)
+	controller: function ServiceListController($scope, $http, $interval)
 	{
+		$scope.services = [];
 
-		this.services = [];
-		var that = this;
+		this.reload = function (){
+			$http.get('/api/service/list').
+			then(function(response) {
+				$scope.services = response.data.services;
+			});
+		};
+		this.reload();
 
-		$http.get('/api/service/list').
-		then(function(response) {
-			that.services = response.data.services;
-		});
+		var theInterval = $interval(function(){
+			this.reload();
+		}.bind(this), 5000);
 	}
 
 });
