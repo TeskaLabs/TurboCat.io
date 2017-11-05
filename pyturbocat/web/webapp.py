@@ -27,9 +27,6 @@ class WebApplication(aiohttp.web.Application):
 		self.port = 7443 # Config.getint('api:web', 'port')
 		self.backlog = 10 # Config.getint('api:web','backlog')
 
-		#self.access_log = AccessLogger()
-		#self.access_log.addHandler(app._log_handler)
-
 
 	def start(self, app):
 		
@@ -39,7 +36,7 @@ class WebApplication(aiohttp.web.Application):
 		self.router.add_static('/webapp', './webapp', show_index=False)
 		self.router.add_get('/', self.serve_get_webapp)
 
-		self.handler = self.make_handler() #access_log=self.access_log)
+		self.handler = self.make_handler()
 		app.fix(self.startup())
 
 		# Start servers
