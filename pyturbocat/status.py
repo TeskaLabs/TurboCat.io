@@ -3,7 +3,21 @@ from enum import Enum
 ###
 
 class Status(Enum):
-	ERROR = 1
-	CONFIG = 2
-	RUNNING = 3
-	DONE = 4
+	CRITICAL = (50, 'purple')
+	ERROR = (40, 'red')
+	CONFIG = (30, 'orange')
+	RUNNING = (20, 'green')
+	DONE = (10, 'gray')
+
+
+	def __init__(self, level, color):
+		self.level =level
+		self.color = color
+
+
+	def describe(self):
+		return {
+			'name': str(self.name),
+			'level': self.level,
+			'color': self.color
+		}

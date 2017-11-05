@@ -52,6 +52,7 @@ class Service(abc.ABC):
 		return {
 			'module': str(self.__class__.__module__),
 			'name': str(self.__class__.__name__),
+			'status': self.status.describe(),
 		}
 
 	def set_status(self, status):
