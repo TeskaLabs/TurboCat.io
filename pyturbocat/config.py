@@ -11,10 +11,6 @@ class ConfigParser(configparser.ConfigParser):
 			'include': '',
 		},
 
-		'anonymizer': {
-			'salt': '',
-		},
-
 	}
 
 
