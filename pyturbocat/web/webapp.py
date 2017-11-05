@@ -7,6 +7,17 @@ from ..config import Config
 
 L = logging.getLogger(__name__)
 
+
+Config.add_defaults(
+	{
+		'webapp': {
+			'listen': 'localhost',
+			'port': 7443,
+			'backlog': 128,
+		}
+	}
+)
+
 ###
 
 class WebApplication(aiohttp.web.Application):
@@ -23,9 +34,9 @@ class WebApplication(aiohttp.web.Application):
 		#TODO: Support of HTTPS
 		self.ssl_context = None
 		
-		self.hosts = ['localhost'] #(Config.get('api:web', 'listen'),)
-		self.port = 7443 # Config.getint('api:web', 'port')
-		self.backlog = 10 # Config.getint('api:web','backlog')
+		self.hosts = (Config.get('webapp', 'listen'),)
+		self.port = Config.getint('webapp', 'port')
+		self.backlog = Config.getint('webapp','backlog')
 
 
 	def start(self, app):
