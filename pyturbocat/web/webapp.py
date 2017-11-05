@@ -43,6 +43,7 @@ class WebApplication(aiohttp.web.Application):
 		
 		self.router.add_get('/api/module/list', self.serve_get_module_list)
 		self.router.add_get('/api/service/list', self.serve_get_service_list)
+		self.router.add_get('/api/config', self.serve_get_config)
 
 		self.router.add_static('/webapp', './webapp', show_index=False)
 		self.router.add_get('/', self.serve_get_webapp)
@@ -123,5 +124,11 @@ class WebApplication(aiohttp.web.Application):
 	async def serve_get_service_list(self, request):
 		data = {
 			'services': [svc.describe() for sk, svc in self.app.services.items()]
+		}
+		return aiohttp.web.json_response(data)
+
+	async def serve_get_config(self, request):
+		data = {
+			'config': Config.describe()
 		}
 		return aiohttp.web.json_response(data)

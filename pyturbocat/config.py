@@ -80,6 +80,11 @@ class ConfigParser(configparser.ConfigParser):
 		self.add_defaults(self.defaults)
 
 
+	def describe(self):
+		result = dict()
+		for section in self._sections:
+			result[section] = self._sections[section]
+		return self._sections
 ###
 
 Config = ConfigParser()
