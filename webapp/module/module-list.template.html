@@ -1,0 +1,17 @@
+<div class="card">
+	<div class="card-body">
+		<h4 class="card-title">Modules</h4>
+		<table class="table table-bordered table-sm">
+			<thead>
+				<tr>
+					<th scope="col">Name</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr ng-repeat="module in $ctrl.modules">
+					<td>{{module.module}} {{module.name}}</td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+</div>

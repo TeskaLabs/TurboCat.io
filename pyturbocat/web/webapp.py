@@ -17,6 +17,7 @@ class WebApplication(aiohttp.web.Application):
 			#middlewares=[IndexMiddleware(), context_middleware()],
 			debug=Config['general']['verbose']
 		)
+		self.app = app
 		self.servers = []
 
 		#TODO: Support of HTTPS
@@ -32,8 +33,11 @@ class WebApplication(aiohttp.web.Application):
 
 	def start(self, app):
 		
-		self.router.add_static('/web', './web', show_index=False)
-		self.router.add_get('/', self.serve_webapp)
+		self.router.add_get('/api/module/list', self.serve_get_module_list)
+		self.router.add_get('/api/service/list', self.serve_get_service_list)
+
+		self.router.add_static('/webapp', './webapp', show_index=False)
+		self.router.add_get('/', self.serve_get_webapp)
 
 		self.handler = self.make_handler() #access_log=self.access_log)
 		app.fix(self.startup())
@@ -50,7 +54,7 @@ class WebApplication(aiohttp.web.Application):
 			)
 
 
-	async def serve_webapp(self, request):
+	async def serve_get_webapp(self, request):
 		resp = aiohttp.web.StreamResponse(
 			status=200, reason='OK', 
 			headers={'Content-Type': 'text/html'}
@@ -59,7 +63,7 @@ class WebApplication(aiohttp.web.Application):
 		await resp.prepare(request)
 
 		resp.write("""<!DOCTYPE html>
-<html lang="en" ng-app="TurboCatWebApp">
+<html lang="en" xmlns:ng="http://angularjs.org" ng-app="TurboCatWebApp">
 	<head>
 		<title>TurboCat.io @ {0}</title>
 		<meta charset="utf-8">
@@ -73,20 +77,43 @@ class WebApplication(aiohttp.web.Application):
 				<span class="navbar-toggler-icon"></span>
 			</button>
 
-			<div class="collapse navbar-collapse" id="navbars" ng-controller="NavBarsController">
+			<div class="collapse navbar-collapse" id="navbars">
 			</div>
 		</nav>
 
-		<main role="main" class="container">
-			<div><h1>Loading ...</h1></div>
+		<main role="main" class="container-fluid">
+			<div class="row align-items-center">
+				<div class="col-sm-4 offset-md-4" style="padding-top: 16em;">
+					<p class="text-center display-3">Loading ...</p>
+				</div>
+			</div>
 		</main>
 
 		<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
 		<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.3/umd/popper.min.js" integrity="sha384-vFJXuSJphROIrBnz7yo7oB41mKfc8JzQZiCq4NCceLEaO4IHwicKwpJf9c9IpFgh" crossorigin="anonymous"></script>
 		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/js/bootstrap.min.js" integrity="sha384-alpBpkh1PFOepccYVYDB4do5UnbKysX5WZXm3XxPqe5iKTfUKjNkCk9SaVuEZflJ" crossorigin="anonymous"></script>
-		<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.6/angular.min.js"></script>
-		<script src="./web/app.js"></script>
+		<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.6/angular.min.js"></script>
+		<script src="/webapp/webapp.js"></script>
+		<script src="/webapp/module/module.module.js"></script>
+		<script src="/webapp/module/module-list.component.js"></script>
+		<script src="/webapp/service/service.module.js"></script>
+		<script src="/webapp/service/service-list.component.js"></script>
+
 	</body>
 </html>""".format(socket.gethostname()).encode('utf-8'))
 
 		return resp
+
+
+	async def serve_get_module_list(self, request):
+		data = {
+			'modules': [m.describe() for m in self.app.modules]
+		}
+		return aiohttp.web.json_response(data)
+
+
+	async def serve_get_service_list(self, request):
+		data = {
+			'services': [svc.describe() for sk, svc in self.app.services.items()]
+		}
+		return aiohttp.web.json_response(data)
