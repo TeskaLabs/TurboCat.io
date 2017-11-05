@@ -10,7 +10,7 @@
 			</thead>
 			<tbody>
 				<tr ng-repeat="service in $ctrl.services">
-					<td>{{service.module}} {{service.name}}</td>
+					<td>{{service.module}}.{{service.name}}</td>
 					<td><span class="badge badge-pill badge-dark" style="background-color: {{service.status.color}}">{{service.status.name}}</span></td>
 				</tr>
 			</tbody>

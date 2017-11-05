@@ -1,7 +1,7 @@
 angular.module('service').
 component('serviceList',
 {
-	templateUrl: '/webapp/service/service-list.template.html?2',
+	templateUrl: '/webapp/service/service-list.template.html?v=' + Date.now(),
 
 	controller: function ServiceListController($scope, $http)
 	{
